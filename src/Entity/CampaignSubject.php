@@ -21,7 +21,7 @@ class CampaignSubject
     /**
      * @ORM\Column(type="string")
      */
-    private int $name;
+    private string $name;
 
     /**
      * @return int
@@ -40,17 +40,17 @@ class CampaignSubject
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getName(): int
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param int $name
+     * @param string $name
      */
-    public function setName(int $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }

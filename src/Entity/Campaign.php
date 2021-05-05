@@ -6,7 +6,9 @@ namespace App\Entity;
 
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity
@@ -30,7 +32,7 @@ class Campaign
     /**
      * @ORM\Column(type="string")
      */
-    private int $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="text")
@@ -51,7 +53,7 @@ class Campaign
      *     inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
      * )
      */
-    private ArrayCollection $tags;
+    private Collection $tags;
 
     /**
      * @ORM\ManyToMany(targetEntity="Image")
@@ -61,7 +63,7 @@ class Campaign
      *     inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id")}
      * )
      */
-    private ArrayCollection $galleryImages;
+    private Collection $galleryImages;
 
     /**
      * @ORM\Column(type="string", name="youtube_video_key")
@@ -92,6 +94,12 @@ class Campaign
      * @ORM\Column(type="datetime_immutable", name="updated_at")
      */
     private DateTimeImmutable $updatedAt;
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+        $this->galleryImages = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -126,17 +134,17 @@ class Campaign
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getName(): int
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param int $name
+     * @param string $name
      */
-    public function setName(int $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -174,33 +182,33 @@ class Campaign
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getTags(): ArrayCollection
+    public function getTags(): Collection
     {
         return $this->tags;
     }
 
     /**
-     * @param ArrayCollection $tags
+     * @param Collection $tags
      */
-    public function setTags(ArrayCollection $tags): void
+    public function setTags(Collection $tags): void
     {
         $this->tags = $tags;
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getGalleryImages(): ArrayCollection
+    public function getGalleryImages(): Collection
     {
         return $this->galleryImages;
     }
 
     /**
-     * @param ArrayCollection $galleryImages
+     * @param Collection $galleryImages
      */
-    public function setGalleryImages(ArrayCollection $galleryImages): void
+    public function setGalleryImages(Collection $galleryImages): void
     {
         $this->galleryImages = $galleryImages;
     }

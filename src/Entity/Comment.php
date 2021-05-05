@@ -40,12 +40,12 @@ class Comment
     /**
      * @ORM\Column(type="integer")
      */
-    private int $likedCount;
+    private int $likedCount = 0;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private int $dislikedCount;
+    private int $dislikedCount = 0;
 
     /**
      * @ORM\Column(type="datetime_immutable", name="created_at")
