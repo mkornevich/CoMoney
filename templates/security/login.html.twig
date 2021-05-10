@@ -1,0 +1,40 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="card mt-5 m-auto" style="max-width: 800px">
+            <div class="card-header">
+                Вход
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    <div class="mb-3">
+                        <label for="login" class="form-label">Логин</label>
+                        <input type="text" name="username" class="form-control" id="login" value="{{ last_username }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Пароль</label>
+                        <input type="password" name="password" class="form-control" id="password">
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" name="_remember_me" class="form-check-input" id="remember-me">
+                        <label class="form-check-label" for="remember-me">Запомнить меня</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary float-end">Войти</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock content%}
