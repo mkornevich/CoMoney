@@ -36,6 +36,7 @@ class UserController extends AbstractController
         $qb = $userRepository->createQueryBuilder('u');
         $query = $qb->getQuery();
         $pagination = $paginator->paginate($query, $request->query->getInt('page', 1), 10);
+
         return $this->render('user/list.html.twig', [
             'users' => $query->execute(),
             'pagination' => $pagination,

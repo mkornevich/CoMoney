@@ -1,0 +1,96 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-12 col-lg-9">
+                <div class="row gy-4">
+                    {% for campaign in campaigns %}
+                        <div class="col-6">
+                            <div class="card">
+                                <img src="{{ campaign.image.path }}" class="card-img-top" alt="image">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">{{ campaign.name }}</h5>
+                                        <span style="color: #e79b09"><i
+                                                    class="fa fa-star"></i> {{ campaign.rating }}</span>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        {% for tag in campaign.tags %}
+                                            <span class="badge bg-light text-dark">{{ tag.name }}</span>
+                                        {% endfor %}
+                                    </div>
+
+                                    <p class="card-text">{{ campaign.description }}</p>
+
+                                    <div>
+                                        <small>Собрано: {{ campaign.totalAmount }}</small>
+                                        <small class="float-end">Цель: {{ campaign.targetAmount }}</small>
+                                    </div>
+                                    <div class="progress mb-3" style="height: 7px">
+                                        <div class="progress-bar" role="progressbar"
+                                             style="width: {{ campaign.getTotalAmountPercentage }}%;"></div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-muted" style="font-size: 0.8rem">
+                                            <span><i class="fa fa-folder"></i> {{ campaign.subject.name }}</span>
+                                            <span class="ps-1"><i
+                                                        class="fa fa-clock-o"></i> {{ campaign.endFundraisingAt|date("d.m.Y") }}</span>
+                                            <span class="ps-1">
+                                                <i class="fa fa-user-o"></i>
+                                                <a href="{{ path('user_profile', {'id': campaign.owner.id}) }}">{{ campaign.owner.username }}</a>
+                                            </span>
+                                        </span>
+                                        <a href="#" class="btn btn-outline-primary float-end"><i class="fa fa-chevron-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="navigation pt-3">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <form class="input-group w-auto mb-4">
+                    <input type="text" class="form-control" placeholder="Поиск" aria-label="Search"
+                           aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
+                </form>
+                <ul class="list-group mb-4">
+                    <li class="list-group-item active" aria-current="true">Все компании</li>
+                    <li class="list-group-item" aria-current="true">Проспонсированные</li>
+                    <li class="list-group-item">Мои компании</li>
+                </ul>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Фильтрация</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="{{ path('campaign_list', app.request.query|merge({'add': 125})) }}" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                        {{ dump(app.request.queryString) }}
+                    </div>
+                </div>
+
+                <form action="{{ path('campaign_list') }}" method="get">
+
+                    {% for param in app.request.queryString|split('&') %}
+                        {% set parts = param|split('=') %}
+                        <input type="hidden" name="{{ parts[0] }}" value="{{ parts[1] }}">
+                    {% endfor %}
+
+                    <input type="text" name="inppp">
+                    <input type="submit">
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

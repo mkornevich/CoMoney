@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\CampaignRepository")
  * @ORM\Table(name="campaign")
  */
 class Campaign
@@ -56,6 +56,12 @@ class Campaign
     private Collection $tags;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Image")
+     * @ORM\JoinColumn(name="image_id", referencedColumnName="id")
+     */
+    private Image $image;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Image")
      * @ORM\JoinTable(
      *     name="campaign_image",
@@ -79,6 +85,11 @@ class Campaign
      * @ORM\Column(type="decimal", precision=10, scale=2, name="total_amount")
      */
     private string $totalAmount;
+
+    /**
+     * @ORM\Column(type="decimal", precision=2, scale=1, name="rating")
+     */
+    private string $rating;
 
     /**
      * @ORM\Column(type="datetime_immutable", name="end_fundraising_at")
@@ -198,6 +209,24 @@ class Campaign
     }
 
     /**
+     * @return Image
+     */
+    public function getImage(): Image
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param Image $image
+     */
+    public function setImage(Image $image): void
+    {
+        $this->image = $image;
+    }
+
+
+
+    /**
      * @return Collection
      */
     public function getGalleryImages(): Collection
@@ -253,6 +282,13 @@ class Campaign
         return $this->totalAmount;
     }
 
+    public function getTotalAmountPercentage(): string
+    {
+        return bcdiv(
+            bcmul(100, $this->totalAmount),
+            $this->targetAmount, 0);
+    }
+
     /**
      * @param string $totalAmount
      */
@@ -260,6 +296,24 @@ class Campaign
     {
         $this->totalAmount = $totalAmount;
     }
+
+    /**
+     * @return string
+     */
+    public function getRating(): string
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param string $rating
+     */
+    public function setRating(string $rating): void
+    {
+        $this->rating = $rating;
+    }
+
+
 
     /**
      * @return DateTimeImmutable

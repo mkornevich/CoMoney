@@ -266,6 +266,10 @@ class AppFixtures extends Fixture
             $campaign->setDescription($this->faker->text);
             $campaign->setSubject($this->faker->randomElement($this->campaignSubjects));
 
+            $campaign->setImage($this->faker->randomElement($this->images));
+
+            $campaign->setRating($this->faker->randomFloat(1, 0, 5));
+
             $this->fillCollection($campaign->getTags(),
                 $this->faker->randomElements($this->tags, 5, false));
 
