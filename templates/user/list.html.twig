@@ -1,0 +1,47 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+        <table class="table mt-3">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">ФИО</th>
+                <th scope="col">Логин</th>
+                <th scope="col">Email</th>
+                <th scope="col">Роли</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for user in users %}
+                <tr>
+                    <th>{{ user.id }}</th>
+                    <td>
+                        <a href="{{ path('user_profile', {'id': user.id}) }}">{{ user.fullName }}</a>
+                    </td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.roles|join(', ') }}</td>
+                    <td>
+                        <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-light btn-sm" type="button">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            <tr>
+            </tbody>
+        </table>
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+
+{% endblock content %}

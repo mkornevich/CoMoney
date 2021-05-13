@@ -1,0 +1,25 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Пользователь{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="card mt-5 m-auto" style="max-width: 800px">
+            <div class="card-body">
+                <h5 class="card-title">Профиль пользователя: {{ user.username }}</h5>
+            </div>
+            <ol class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div class="fw-bold">ФИО</div>
+                    {{ user.fullName }}
+                </li>
+                <li class="list-group-item">
+                    <div class="fw-bold">Email</div>
+                    {{ user.email }}
+                </li>
+            </ol>
+        </div>
+    </div>
+
+{% endblock content %}

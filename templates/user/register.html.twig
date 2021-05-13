@@ -1,0 +1,29 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="card mt-5 m-auto" style="max-width: 800px">
+            <div class="card-header">
+                Регистрация
+            </div>
+            <div class="card-body">
+
+                {{ form_start(form) }}
+                {{ form_row(form.fullName) }}
+                {{ form_row(form.username) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.password.first) }}
+                {{ form_row(form.password.second) }}
+
+                <button type="submit" class="btn btn-primary float-end">Зарегистрироваться</button>
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
