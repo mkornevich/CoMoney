@@ -46,7 +46,8 @@
                                                 <a href="{{ path('user_profile', {'id': campaign.owner.id}) }}">{{ campaign.owner.username }}</a>
                                             </span>
                                         </span>
-                                        <a href="#" class="btn btn-outline-primary float-end"><i class="fa fa-chevron-right"></i></a>
+                                        <a href="#" class="btn btn-outline-primary float-end"><i
+                                                    class="fa fa-chevron-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -58,37 +59,44 @@
                 </div>
             </div>
             <div class="col-lg-3">
-                <form class="input-group w-auto mb-4">
-                    <input type="text" class="form-control" placeholder="Поиск" aria-label="Search"
-                           aria-describedby="button-addon2">
-                    <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
-                </form>
-                <ul class="list-group mb-4">
-                    <li class="list-group-item active" aria-current="true">Все компании</li>
-                    <li class="list-group-item" aria-current="true">Проспонсированные</li>
-                    <li class="list-group-item">Мои компании</li>
-                </ul>
+{#                <form class="input-group w-auto mb-4">#}
+{#                    <input type="text" class="form-control" placeholder="Поиск" aria-label="Search"#}
+{#                           aria-describedby="button-addon2">#}
+{#                    <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>#}
+{#                </form>#}
+{#                <div class="list-group mb-4">#}
+{#                    <a href="{{ path('campaign_list', app.request.query|merge({'tab': 'all'})) }}" class="list-group-item list-group-item-action">Все компании</a>#}
+{#                    <a href="{{ path('campaign_list', app.request.query|merge({'tab': 'payed'})) }}" class="list-group-item list-group-item-action">Проспонсированные</a>#}
+{#                    <a href="{{ path('campaign_list', app.request.query|merge({'tab': 'my'})) }}" class="list-group-item list-group-item-action">Мои компании</a>#}
+{#                </div>#}
+
+
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Фильтрация</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="{{ path('campaign_list', app.request.query|merge({'add': 125})) }}" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                        {{ dump(app.request.queryString) }}
+                        <h5 class="card-title">Поиск и фильтры</h5>
+
+                        {{ form_start(form) }}
+                        
+                        {{ form_rest(form) }}
+
+                        <button class="btn btn-outline-primary w-100" type="submit">Применить</button>
+                        
+                        {{ form_end(form) }}
                     </div>
                 </div>
 
-                <form action="{{ path('campaign_list') }}" method="get">
 
-                    {% for param in app.request.queryString|split('&') %}
-                        {% set parts = param|split('=') %}
-                        <input type="hidden" name="{{ parts[0] }}" value="{{ parts[1] }}">
-                    {% endfor %}
+                {# <form action="{{ path('campaign_list') }}" method="get"> #}
 
-                    <input type="text" name="inppp">
-                    <input type="submit">
-                </form>
-                
+                {# {% for param in app.request.queryString|split('&') %} #}
+                {# {% set parts = param|split('=') %} #}
+                {# <input type="hidden" name="{{ parts[0] }}" value="{{ parts[1] }}"> #}
+                {# {% endfor %} #}
+
+                {# <input type="text" name="inppp"> #}
+                {# <input type="submit"> #}
+                {# </form> #}
+
             </div>
         </div>
     </div>
