@@ -15,6 +15,7 @@ class CampaignRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Campaign::class);
     }
+
     public function getAllWithJoins(): QueryBuilder
     {
         return $this->createQueryBuilder('campaign')
@@ -22,5 +23,11 @@ class CampaignRepository extends ServiceEntityRepository
             ->leftJoin('campaign.owner', 'user')
             ->leftJoin('campaign.subject', 'subject')
             ->leftJoin('campaign.image', 'image');
+    }
+
+    public function persistAndFlush(Campaign $campaign): void
+    {
+        $this->_em->persist($campaign);
+        $this->_em->flush();
     }
 }

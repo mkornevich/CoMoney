@@ -1,0 +1,26 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Редактирование кампании{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="card mt-5 m-auto" style="max-width: 800px">
+            <div class="card-header">
+                Редактирование кампании
+            </div>
+            <div class="card-body">
+
+                {{ form_start(form) }}
+
+                {{ form_rest(form) }}
+
+                <button type="submit" class="btn btn-primary float-end">Сохранить</button>
+
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

@@ -94,12 +94,12 @@ class Campaign
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2, name="total_amount")
      */
-    private string $totalAmount;
+    private string $totalAmount = '0';
 
     /**
      * @ORM\Column(type="decimal", precision=2, scale=1, name="rating")
      */
-    private string $rating;
+    private string $rating = '5';
 
     /**
      * @ORM\Column(type="datetime_immutable", name="end_fundraising_at")
