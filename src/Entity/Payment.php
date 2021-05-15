@@ -21,7 +21,7 @@ class Payment
     private int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Campaign")
+     * @ORM\ManyToOne(targetEntity="Campaign", inversedBy="payments")
      * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id")
      */
     private Campaign $campaign;

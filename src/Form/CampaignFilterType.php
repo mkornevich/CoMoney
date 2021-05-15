@@ -18,15 +18,19 @@ class CampaignFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->setMethod('get')
-            ->add('type', ChoiceType::class, [
+        $builder->setMethod('get');
+
+        if($options['show_tab_filter']) {
+            $builder->add('tab', ChoiceType::class, [
                 'choices' => [
                     'Все' => 'all',
                     'Проспонсированные' => 'sponsored',
                     'Мои компании' => 'my',
                 ]
-            ])
+            ]);
+        }
+
+        $builder
             ->add('search', TextType::class, [
                 'required' => false
             ])
@@ -42,8 +46,8 @@ class CampaignFilterType extends AbstractType
                 'choice_label' => 'name',
             ])
             ->add('tags', EntityType::class, [
+                'attr' => ['class' => 'js-select2'],
                 'multiple' => true,
-                'expanded' => true,
                 'required' => false,
                 'class' => Tag::class,
                 'choice_label' => 'name',
@@ -54,6 +58,9 @@ class CampaignFilterType extends AbstractType
     {
         $resolver->setDefaults([
             'csrf_protection' => false,
+            'show_tab_filter' => false,
         ]);
+
+        $resolver->setAllowedTypes('show_tab_filter', 'bool');
     }
 }

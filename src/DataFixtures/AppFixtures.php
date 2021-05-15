@@ -264,6 +264,7 @@ class AppFixtures extends Fixture
             $campaign->setOwner($this->faker->randomElement($this->users));
             $campaign->setName($this->faker->words(4, true));
             $campaign->setDescription($this->faker->text);
+            $campaign->setText($this->faker->text('1000'));
             $campaign->setSubject($this->faker->randomElement($this->campaignSubjects));
 
             $campaign->setImage($this->faker->randomElement($this->images));
@@ -326,9 +327,9 @@ class AppFixtures extends Fixture
             $user = new User();
             $user->setEmail($this->faker->email);
             $user->setFullName($this->faker->name);
-            $user->setPassword($this->passwordEncoder->encodePassword($user, "password$i"));
-            $user->setRoles(['ROLE_USER']);
             $user->setUsername($this->faker->userName);
+            $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getUsername()));
+            $user->setRoles(['ROLE_USER']);
             $this->users[] = $user;
             $this->manager->persist($user);
         }

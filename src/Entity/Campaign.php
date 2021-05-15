@@ -30,6 +30,11 @@ class Campaign
     private User $owner;
 
     /**
+     * @ORM\OneToMany(targetEntity="Payment", mappedBy="campaign")
+     */
+    private Collection $payments;
+
+    /**
      * @ORM\Column(type="string")
      */
     private string $name;
@@ -38,6 +43,11 @@ class Campaign
      * @ORM\Column(type="text")
      */
     private string $description;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private string $text;
 
     /**
      * @ORM\ManyToOne(targetEntity="CampaignSubject");
@@ -361,5 +371,21 @@ class Campaign
     public function setUpdatedAt(DateTimeImmutable $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return string
+     */
+    public function getText(): string
+    {
+        return $this->text;
+    }
+
+    /**
+     * @param string $text
+     */
+    public function setText(string $text): void
+    {
+        $this->text = $text;
     }
 }

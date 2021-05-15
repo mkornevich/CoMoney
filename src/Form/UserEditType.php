@@ -25,6 +25,7 @@ class UserEditType extends AbstractType
             ->add('email', EmailType::class)
             ->add('role', ChoiceType::class, [
                 'mapped' => false,
+                'expanded' => true,
                 'choices' => [
                     'Пользователь' => 'user',
                     'Администратор' => 'admin',
