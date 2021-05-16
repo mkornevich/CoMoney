@@ -1,0 +1,39 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Список платежей{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <table class="table mt-3">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Плательщик</th>
+                <th scope="col">Кампания</th>
+                <th scope="col">Сумма</th>
+                <th scope="col">Дата время</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.id }}</td>
+                    <td><a href="{{ path('user_profile', {'id': payment.user.id}) }}">{{ payment.user.fullName }}</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('campaign_view', {'id': payment.campaign.id}) }}">{{ payment.campaign.name }}</a>
+                    </td>
+                    <td>{{ payment.amount }}</td>
+                    <td>{{ payment.createdAt|date('d.m.Y H:i') }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+            </tbody>
+        </table>
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+
+{% endblock content %}
