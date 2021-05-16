@@ -52,6 +52,19 @@ class Payment
      */
     private DateTimeImmutable $updatedAt;
 
+    public static function create(Campaign $campaign, User $user): Payment
+    {
+        $payment = new Payment();
+        $payment->setCampaign($campaign);
+        $payment->setUser($user);
+        $payment->setIsConfirmed(true);
+
+        $now = new DateTimeImmutable();
+        $payment->setCreatedAt($now);
+        $payment->setUpdatedAt($now);
+        return $payment;
+    }
+
     /**
      * @return int
      */

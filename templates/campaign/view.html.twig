@@ -23,7 +23,7 @@
     </div>
 
     <div class="list-group mt-4">
-        <a href="#" class="list-group-item list-group-item-danger list-group-item-action">Поддердать кампанию</a>
+        <a href="{{ path('payment_pay', {'campaign_id': campaign.id}) }}" class="list-group-item list-group-item-danger list-group-item-action">Поддердать кампанию</a>
         <a href="{{ path('campaign_edit', {'id': campaign.id}) }}" class="list-group-item list-group-item-action">Редактировать</a>
     </div>
 

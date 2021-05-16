@@ -1,0 +1,20 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Платеж{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="card m-auto" style="max-width: 500px; margin-top: 150px!important;">
+            <div class="card-body">
+                <h5 class="card-title mb-0">Платеж для кампании:</h5>
+                <span class="mb-2 d-block">{{ payment.campaign.name }}</span>
+                {{ form_start(form) }}
+                {{ form_rest(form) }}
+                <button class="btn btn-primary float-end" type="submit">Оплатить</button>
+                {{ form_start(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
