@@ -1,13 +1,13 @@
 {% extends 'layout/base.html.twig' %}
 
-{% block title %}Создание новой кампании{% endblock %}
+{% block title 'Создание новой кампании' %}
 
 {% block content %}
 
     <div class="container">
         <div class="card mt-5 m-auto" style="max-width: 800px">
             <div class="card-header">
-                Создание новой кампании
+                {{ block('title') }}
             </div>
             <div class="card-body">
 

@@ -21,7 +21,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class CampaignController extends AbstractController
 {
     /**
-     * @Route("/campaign/{id<\d+>}/edit")
+     * @Route("/campaign/{id<\d+>}", name="campaign_view")
+     */
+    public function view(Campaign $campaign): Response
+    {
+        return $this->render('campaign/view.html.twig', [
+            'campaign' => $campaign,
+        ]);
+    }
+
+    /**
+     * @Route("/campaign/{id<\d+>}/edit", name="campaign_edit")
      */
     public function edit(int $id, Request $request, CampaignRepository $campaignRepository): Response
     {
