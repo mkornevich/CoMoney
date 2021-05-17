@@ -21,9 +21,8 @@ class UserController extends AbstractController
     /**
      * @Route("/user/{id<\d+>}", name="user_profile")
      */
-    public function profile(int $id, UserRepository $userRepository): Response
+    public function profile(User $user): Response
     {
-        $user = $userRepository->find($id);
         return $this->render('user/profile.html.twig', [
             'user' => $user,
         ]);
@@ -55,8 +54,8 @@ class UserController extends AbstractController
         $form = $this->createForm(UserEditType::class, $user, [
             'show_roles_field' => $this->isGranted('edit_role', $user),
         ]);
-        $form->handleRequest($request);
 
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $newPassword = $form['password']->getData();
             if ($newPassword !== null) {

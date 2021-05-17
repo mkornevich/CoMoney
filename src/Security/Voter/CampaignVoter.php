@@ -15,7 +15,6 @@ class CampaignVoter extends Voter
 {
     public const EDIT = 'edit';
     public const EDIT_OWNER = 'edit_owner';
-    public const CREATE = 'create';
 
     private Security $security;
 
@@ -26,7 +25,7 @@ class CampaignVoter extends Voter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return $subject instanceof Campaign && in_array($attribute, [self::EDIT, self::EDIT_OWNER, self::CREATE]);
+        return $subject instanceof Campaign && in_array($attribute, [self::EDIT, self::EDIT_OWNER]);
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -44,10 +43,6 @@ class CampaignVoter extends Voter
 
         if ($attribute == self::EDIT) {
             return $subject->getOwner() === $user;
-        }
-
-        if ($attribute == self::CREATE) {
-            return true;
         }
 
         return false;

@@ -61,14 +61,6 @@ class Comment
     }
 
     /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return Campaign
      */
     public function getCampaign(): Campaign

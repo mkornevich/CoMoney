@@ -48,7 +48,10 @@ class CampaignType extends AbstractType
                 'class' => Tag::class,
                 'choice_label' => 'name',
             ])
-            ->add('youtubeVideoKey', TextType::class)
+            ->add('youtubeVideoKey', TextType::class, [
+                'required' => false,
+                'empty_data' => '',
+            ])
             ->add('targetAmount', NumberType::class, [
                 'scale' => 2
             ])

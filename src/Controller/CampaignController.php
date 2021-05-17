@@ -10,12 +10,12 @@ use App\Form\CampaignType;
 use App\Form\CampaignFilterType;
 use App\Repository\CampaignRepository;
 use App\Repository\ImageRepository;
-use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CampaignController extends AbstractController
@@ -40,6 +40,7 @@ class CampaignController extends AbstractController
         $form = $this->createForm(CampaignType::class, $campaign, [
             'show_owner_field' => $this->isGranted('edit_owner', $campaign),
         ]);
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
@@ -53,24 +54,20 @@ class CampaignController extends AbstractController
 
     /**
      * @Route("/campaign/create", name="campaign_create")
+     * @IsGranted("ROLE_USER")
      */
     public function create(Request $request, CampaignRepository $campaignRepository, ImageRepository $imageRepository): Response
     {
-        $campaign = new Campaign();
-        $campaign->setOwner($this->getUser());
-
-        $this->denyAccessUnlessGranted('create', $campaign);
+        $campaign = Campaign::create($this->getUser());
 
         $form = $this->createForm(CampaignType::class, $campaign, [
             'show_owner_field' => $this->isGranted('edit_owner', $campaign),
         ]);
-        $form->handleRequest($request);
 
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $nowDateTime = new DateTimeImmutable();
             $campaign->setImage($imageRepository->findOneBy([]));
-            $campaign->setCreatedAt($nowDateTime);
-            $campaign->setUpdatedAt($nowDateTime);
+            $campaign->setGalleryImages(new ArrayCollection($imageRepository->findBy([], limit: 5)));
             $campaignRepository->persistAndFlush($campaign);
             return $this->redirectToRoute('campaign_list');
         }
@@ -89,6 +86,7 @@ class CampaignController extends AbstractController
         $builder = $campaignRepository->getAllWithJoins();
 
         $form = $this->createForm(CampaignFilterType::class, options: ['show_tab_filter' => $this->getUser() != null]);
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $filter->applyFilterForm($form, $builder);
