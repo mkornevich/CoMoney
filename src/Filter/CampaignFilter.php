@@ -29,6 +29,10 @@ class CampaignFilter extends AbstractFilter
 
     private function addTabFilter(QueryBuilder $builder, FormInterface $form): void
     {
+        if (!$form->has('tab')) {
+            return;
+        }
+
         $tab = $form->get('tab')->getData();
         $user = $this->security->getUser();
 
