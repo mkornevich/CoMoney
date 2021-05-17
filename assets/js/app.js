@@ -4,7 +4,7 @@ import 'select2/dist/js/select2';
 import 'lightgallery.js';
 
 // select2 functionality
-$('.js-select2').select2();
+$('.js-select2').select2({width: '100%'});
 
 // gallery functionality
 document.querySelectorAll('.js-gallery').forEach(el => {
