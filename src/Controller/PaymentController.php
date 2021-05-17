@@ -9,11 +9,9 @@ use App\Entity\Payment;
 use App\Form\PaymentPayType;
 use App\Repository\PaymentRepository;
 use App\Updater\CampaignTotalAmountUpdater;
-use DateTimeImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +21,7 @@ class PaymentController extends AbstractController
 {
     /**
      * @Route("/payment/list", name="payment_list")
+     * @IsGranted("ROLE_USER")
      */
     public function list(Request $request, PaymentRepository $paymentRepository, PaginatorInterface $paginator): Response
     {
@@ -39,6 +38,7 @@ class PaymentController extends AbstractController
     /**
      * @Route("/campaign/{campaign_id<\d+>}/pay", name="payment_pay")
      * @Entity("campaign", expr="repository.find(campaign_id)")
+     * @IsGranted("ROLE_USER")
      */
     public function pay(Campaign $campaign, Request $request, PaymentRepository $paymentRepository, CampaignTotalAmountUpdater $updater): Response
     {

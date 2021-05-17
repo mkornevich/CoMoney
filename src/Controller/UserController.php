@@ -9,6 +9,7 @@ use App\Form\UserEditType;
 use App\Form\UserRegisterType;
 use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +31,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/user/list", name="user_list")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function list(UserRepository $userRepository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -46,26 +48,24 @@ class UserController extends AbstractController
     /**
      * @Route("/user/{id<\d+>}/edit", name="user_edit")
      */
-    public function edit(int $id, Request $request, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function edit(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $user = $userRepository->find($id);
-        $form = $this->createForm(UserEditType::class, $user);
+        $this->denyAccessUnlessGranted('edit', $user);
+
+        $form = $this->createForm(UserEditType::class, $user, [
+            'show_roles_field' => $this->isGranted('edit_role', $user),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $newPassword = $form['password']->getData();
-            if ($newPassword === '') {
+            if ($newPassword !== null) {
                 $user->setPassword($passwordEncoder->encodePassword($user, $newPassword));
             }
 
-            $newRole = $form['role']->getData();
-            $user->setRoles($newRole === 'admin' ? ['ROLE_USER', 'ROLE_ADMIN'] : ['ROLE_USER']);
-
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('user_list');
+            return $this->redirectToRoute('user_profile', ['id' => $user->getId()]);
         }
-
-        $form->get('role')->setData(in_array('ROLE_ADMIN', $user->getRoles()) ? 'admin' : 'user');
 
         return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),

@@ -10,19 +10,10 @@
                 Редактирование
             </div>
             <div class="card-body">
-
                 {{ form_start(form) }}
-                {{ form_row(form.fullName) }}
-                {{ form_row(form.username) }}
-                {{ form_row(form.email) }}
-                {{ form_row(form.role) }}
-                {{ form_row(form.password.first) }}
-                {{ form_row(form.password.second) }}
-
+                {{ form_rest(form) }}
                 <button type="submit" class="btn btn-primary float-end">Сохранить</button>
-
                 {{ form_end(form) }}
-
             </div>
         </div>
     </div>

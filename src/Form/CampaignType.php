@@ -32,6 +32,7 @@ class CampaignType extends AbstractType
             $builder->add('owner', TextType::class, [
                 'invalid_message' => 'User with this username not found.',
             ]);
+            $builder->get('owner')->addModelTransformer($this->userToStringTransformer);
         }
 
         $builder->add('name', TextType::class)
@@ -54,8 +55,6 @@ class CampaignType extends AbstractType
             ->add('endFundraisingAt', DateTimeType::class, [
                 'input' => 'datetime_immutable'
             ]);
-
-        $builder->get('owner')->addModelTransformer($this->userToStringTransformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)

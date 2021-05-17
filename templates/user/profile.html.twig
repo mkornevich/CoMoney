@@ -6,8 +6,11 @@
 
     <div class="container">
         <div class="card mt-5 m-auto" style="max-width: 800px">
-            <div class="card-body">
-                <h5 class="card-title">Профиль пользователя: {{ user.username }}</h5>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title m-0">Профиль пользователя: {{ user.username }}</h5>
+                {% if is_granted('edit', user) %}
+                    <a class="btn btn-sm btn-primary float-end" href="{{ path('user_edit', {'id': user.id}) }}">Редактировать</a>
+                {% endif %}
             </div>
             <ol class="list-group list-group-flush">
                 <li class="list-group-item">

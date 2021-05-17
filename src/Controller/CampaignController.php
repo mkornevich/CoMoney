@@ -33,19 +33,17 @@ class CampaignController extends AbstractController
     /**
      * @Route("/campaign/{id<\d+>}/edit", name="campaign_edit")
      */
-    public function edit(int $id, Request $request, CampaignRepository $campaignRepository): Response
+    public function edit(Campaign $campaign, Request $request): Response
     {
-        $campaign = $campaignRepository->find($id);
+        $this->denyAccessUnlessGranted('edit', $campaign);
 
-        if ($campaign === null) {
-            throw new NotFoundHttpException();
-        }
-
-        $form = $this->createForm(CampaignType::class, $campaign);
+        $form = $this->createForm(CampaignType::class, $campaign, [
+            'show_owner_field' => $this->isGranted('edit_owner', $campaign),
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('campaign_list');
+            return $this->redirectToRoute('campaign_view', ['id' => $campaign->getId()]);
         }
 
         return $this->render('campaign/edit.html.twig', [
@@ -61,7 +59,11 @@ class CampaignController extends AbstractController
         $campaign = new Campaign();
         $campaign->setOwner($this->getUser());
 
-        $form = $this->createForm(CampaignType::class, $campaign);
+        $this->denyAccessUnlessGranted('create', $campaign);
+
+        $form = $this->createForm(CampaignType::class, $campaign, [
+            'show_owner_field' => $this->isGranted('edit_owner', $campaign),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

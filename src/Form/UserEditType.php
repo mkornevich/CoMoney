@@ -5,7 +5,9 @@ namespace App\Form;
 
 
 use App\Entity\User;
+use App\Form\DataTransformer\RolesToIsAdminTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -22,31 +24,34 @@ class UserEditType extends AbstractType
         $builder
             ->add('fullName', TextType::class)
             ->add('username', TextType::class)
-            ->add('email', EmailType::class)
-            ->add('role', ChoiceType::class, [
-                'mapped' => false,
-                'expanded' => true,
-                'choices' => [
-                    'Пользователь' => 'user',
-                    'Администратор' => 'admin',
-                ]
-            ])
-            ->add('password', RepeatedType::class, [
+            ->add('email', EmailType::class);
+
+        if($options['show_roles_field']) {
+            $builder->add('roles', CheckboxType::class, [
+                'label' => 'Is admin?',
                 'required' => false,
-                'mapped' => false,
-                'type' => PasswordType::class,
-                'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat password'],
-                'constraints' => [
-                    new Length(['min' => 6])
-                ]
             ]);
+            $builder->get('roles')->addModelTransformer(new RolesToIsAdminTransformer());
+        }
+
+        $builder->add('password', RepeatedType::class, [
+            'required' => false,
+            'mapped' => false,
+            'type' => PasswordType::class,
+            'first_options' => ['label' => 'Password'],
+            'second_options' => ['label' => 'Repeat password'],
+            'constraints' => [
+                new Length(['min' => 6])
+            ]
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class
+            'data_class' => User::class,
+            'show_roles_field' => false,
         ]);
+        $resolver->setAllowedTypes('show_roles_field', 'bool');
     }
 }
